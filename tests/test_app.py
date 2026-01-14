@@ -1,29 +1,29 @@
-"""Simple calculator application."""
+"""Tests for calculator."""
 
-class Calculator:
-    @staticmethod
-    def add(a, b):
-        """Add two numbers."""
-        return a + b
-    
-    @staticmethod
-    def subtract(a, b):
-        """Subtract two numbers."""
-        return a - b
-    
-    @staticmethod
-    def multiply(a, b):
-        """Multiply two numbers."""
-        return a * b
-    
-    @staticmethod
-    def divide(a, b):
-        """Divide two numbers."""
-        if b == 0:
-            raise ValueError("Cannot divide by zero")
-        return a / b
+import pytest
+from src.app import Calculator
 
-if __name__ == "__main__":
-    calc = Calculator()
-    print(f"2 + 3 = {calc.add(2, 3)}")
-    print(f"10 - 4 = {calc.subtract(10, 4)}")
+class TestCalculator:
+    @pytest.fixture
+    def calc(self):
+        return Calculator()
+    
+    def test_add(self, calc):
+        assert calc.add(2, 3) == 5
+        assert calc.add(-1, 1) == 0
+    
+    def test_subtract(self, calc):
+        assert calc.subtract(5, 2) == 3
+        assert calc.subtract(0, 5) == -5
+    
+    def test_multiply(self, calc):
+        assert calc.multiply(4, 3) == 12
+        assert calc.multiply(0, 100) == 0
+    
+    def test_divide(self, calc):
+        assert calc.divide(10, 2) == 5
+        assert calc.divide(7, 2) == 3.5
+    
+    def test_divide_by_zero(self, calc):
+        with pytest.raises(ValueError):
+            calc.divide(10, 0)
